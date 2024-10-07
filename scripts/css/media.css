@@ -1,0 +1,178 @@
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #1a1a1a;
+		text-shadow: 1px 1px #000;
+	}
+
+	header,
+	main,
+	footer {
+		background-color: #1a1a1a;
+	}
+
+	h1,
+	h2 {
+		color: #ddd;
+	}
+
+	#token,
+	#submit {
+		color: #fff;
+		border-color: #000;
+	}
+
+	#token {
+		border-top-color: #000;
+		border-bottom-color: #000;
+		border-left-color: #000;
+		background-color: #333;
+	}
+
+	#token:focus {
+		background-color: #3a3a3a;
+	}
+
+	#submit {
+		cursor: pointer;
+		background-color: #2e4052;
+	}
+
+	#submit:hover {
+		background-color: #203953;
+	}
+
+	#screenshot {
+		color: #bbb;
+	}
+
+	#screenshot:hover {
+		color: #fff;
+	}
+
+	nav a {
+		color: #648fa0;
+	}
+
+	nav a:hover {
+		color: #71c6e7;
+	}
+
+	nav a.selected {
+		color: #9ae2ff;
+	}
+
+	article section ul li span,
+	article.list ul li {
+		color: #ccc;
+	}
+
+	article.bars section ul li span {
+		color: #fff;
+	}
+
+	article.bars section ul li {
+		background-color: #252525;
+	}
+
+	article.bars section ul li:hover {
+		background-color: #202020;
+	}
+
+	#levels section ul li div {
+		background-color: #324a5f;
+	}
+
+	#ages section ul li div {
+		background-color: #206d46;
+	}
+
+	#deaths section ul li div {
+		background-color: #7a4343;
+	}
+
+	#played section ul li div {
+		background-color: #6b654b;
+	}
+
+	#birthdays section ul li div {
+		background-color: #65747b;
+	}
+
+	footer div {
+		color: #eee;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	body {
+		background-color: #f4f4f4;
+	}
+
+	header,
+	main,
+	footer {
+		background-color: #f4f4f4;
+	}
+
+	h1,
+	h2,
+	article.list ul li {
+		color: #444;
+	}
+
+	nav a {
+		color: #7ebaff;
+	}
+
+	nav a:hover {
+		color: #0074f8;
+	}
+
+	nav a.selected {
+		color: #004492;
+	}
+
+	#screenshot {
+		color: #666;
+	}
+
+	#screenshot:hover {
+		color: #222;
+	}
+
+	article section ul li span {
+		color: #333;
+	}
+
+	article.bars section ul li {
+		background-color: #f8f8f8;
+	}
+
+	article.bars section ul li:hover {
+		background-color: #f0f0f0;
+	}
+
+	#levels section ul li div {
+		background-color: #9bf6ff;
+	}
+
+	#ages section ul li div {
+		background-color: #caffbf;
+	}
+
+	#deaths section ul li div {
+		background-color: #ffadad;
+	}
+
+	#played section ul li div {
+		background-color: #fdffb6;
+	}
+
+	#birthdays section ul li div {
+		background-color: #d6ccc2;
+	}
+
+	footer div {
+		color: #222;
+	}
+}
