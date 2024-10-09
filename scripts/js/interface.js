@@ -205,20 +205,21 @@ function getMain(criteria, labels) {
 	return output;
 }
 
-function drawCircle(cx, cy, radius, className) {
+function drawCircle(cx, cy, radius, name) {
 	const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
 	circle.setAttribute('cx', cx);
 	circle.setAttribute('cy', cy);
 	circle.setAttribute('r', radius);
-	circle.setAttribute('class', className);
+	circle.setAttribute('class', name);
 
 	return circle;
 }
 
-function drawPie(data, radius = 8.5) {
+function drawPie(data) {
 	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	const circumference = 2 * Math.PI * radius;
+	const circum = 2 * Math.PI * radius;
+	const radius = 8.5;
 	const total = Object.values(data).reduce((acc, val) => acc + val, 0);
 
 	let offset = 0;
@@ -227,12 +228,10 @@ function drawPie(data, radius = 8.5) {
 	svg.appendChild(drawCircle('12', '12', radius, 'ring'));
 
 	Object.keys(data).forEach(item => {
-		const value = data[item];
-		const percentage = value / total;
-		const dash = percentage * circumference;
+		const dash = (parseInt(data[item]) / total) * circum;
 		const circle = drawCircle('12', '12', radius, `segment ${item}`);
 
-		circle.setAttribute('stroke-dasharray', `${dash} ${circumference}`);
+		circle.setAttribute('stroke-dasharray', `${dash} ${circum}`);
 		circle.setAttribute('stroke-dashoffset', `${offset * -1}`);
 		svg.appendChild(circle);
 
