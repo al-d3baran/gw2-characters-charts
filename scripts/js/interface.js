@@ -1,29 +1,19 @@
+const uiNav = document.querySelectorAll('nav a');
 const uiToken = document.getElementById('token');
 const uiSubmit = document.getElementById('submit');
-const uiRaces = document.getElementById('races');
-const uiProfessions = document.getElementById('professions');
-const uiGenders = document.getElementById('genders');
-const uiLevels = document.getElementById('levels');
-const uiAges = document.getElementById('ages');
-const uiDeaths = document.getElementById('deaths');
-const uiPlayed = document.getElementById('played');
-const uiBirthday = document.getElementById('birthdays');
 const uiMain = document.querySelector('main');
-const uiFooter = document.querySelector('footer');
-const uiNav = Array.from(document.querySelectorAll('nav a'));
-const uiScreenshot = document.querySelector('#screenshot svg');
-const labelsRace = ["Asura", "Charr", "Human", "Norn", "Sylvari"];
-const labelsProfession = ["Elementalist", "Engineer", "Guardian", "Mesmer", "Necromancer", "Ranger", "Revenant", "Thief", "Warrior"];
-const labelsGender = ["Male", "Female"];
-const canvasColors = ["#95bf74", "#6f1d1b", "#219ebc", "#fbba72", "#d62828", "#eae2b7", "#c77dff", "#432534", "#fb8500", "#606c38", "#023047", "#3c096c", "#af9981", "#8ecae6"];
-const canvasWidth = 256;
-const canvasHeight = 256;
-const canvasHole = 40;
-const chunkSize = 10;
+const uiArticle = document.querySelector('article');
+const uiScreenshot = document.querySelector('#screenshot');
 
-var apiProcessing = false;
+const labelData = {
+	race: ["Asura", "Charr", "Human", "Norn", "Sylvari"],
+	profession: ["Elementalist", "Engineer", "Guardian", "Mesmer", "Necromancer", "Ranger", "Revenant", "Thief", "Warrior"],
+	gender: ["Male", "Female"]
+}
+
 var apiData = {};
 var uiData = [];
+var apiProcessing = false;
 
 function formatHeader(value) {
 	return value.charAt(0).toUpperCase() + value.slice(1);
@@ -31,6 +21,16 @@ function formatHeader(value) {
 
 function formatValue(value) {
 	return String(value).padStart(2, '0');
+}
+
+function formatOrdinal(value) {
+	const suf = ['th', 'st', 'nd', 'rd'];
+	const mod = value % 100;
+
+	if (mod >= 11 && mod <= 13)
+		return value + suf[0];
+
+	return value + (suf[value % 10] || suf[0]);
 }
 
 function formatTime(data) {
@@ -168,9 +168,13 @@ function drawLabels(data) {
 	const ul = document.createElement('ul');
 
 	Object.keys(data).forEach((key, index) => {
-		const li = document.createElement('li');
-		const color = canvasColors[index % canvasColors.length];
-		li.innerHTML = `<span style="border-color: ${color}">${key}: ${data[key]}</span>`;
+		let li = document.createElement('li');
+		const span = document.createElement('span');
+
+		span.classList.add(key);
+		span.textContent = `${key}: ${data[key]}`;
+
+		li.appendChild(span);
 		ul.appendChild(li);
 	});
 
@@ -179,11 +183,11 @@ function drawLabels(data) {
 
 function getDetails(label, data) {
 	switch (label) {
-		case labelsRace:
+		case labelData.race:
 			return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[3].toLowerCase()})`;
-		case labelsProfession:
+		case labelData.profession:
 			return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[4].toLowerCase()})`;
-		case labelsGender:
+		case labelData.gender:
 			return `${data[0]} (Lv.${data[1]} ${data[4].toLowerCase()} ${data[3].toLowerCase()})`;
 	}
 }
@@ -201,48 +205,52 @@ function getMain(criteria, labels) {
 	return output;
 }
 
-function drawPie(data) {
-	const canvas = document.createElement('canvas');
-	canvas.width = canvasWidth;
-	canvas.height = canvasHeight;
-	const ctx = canvas.getContext('2d');
-	const values = Object.values(data);
-	const total = values.reduce((sum, value) => sum + value, 0);
-	const radius = Math.min(canvas.width, canvas.height) / 2;
-	const left = canvas.width / 2;
-	const top = canvas.height / 2;
-	const space = (canvasHole / 100) * radius;
+function drawCircle(cx, cy, radius, className) {
+	const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
-	var angle = 0;
+	circle.setAttribute('cx', cx);
+	circle.setAttribute('cy', cy);
+	circle.setAttribute('r', radius);
+	circle.setAttribute('class', className);
 
-	values.forEach((value, index) => {
-		const slice = (value / total) * 2 * Math.PI;
-		ctx.beginPath();
-		ctx.moveTo(left, top);
-		ctx.arc(left, top, radius, angle, angle + slice);
-
-		if (canvasHole > 0 && canvasHole < 100)
-			ctx.arc(left, top, space, angle + slice, angle, true);
-
-		ctx.closePath();
-		ctx.fillStyle = canvasColors[index % canvasColors.length];
-		ctx.fill();
-
-		angle += slice;
-	});
-
-	return canvas;
+	return circle;
 }
 
-function drawBars(data, article) {
+function drawPie(data, radius = 8.5) {
+	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	const circumference = 2 * Math.PI * radius;
+	const total = Object.values(data).reduce((acc, val) => acc + val, 0);
+
+	let offset = 0;
+
+	svg.setAttribute('viewBox', '0 0 24 24');
+	svg.appendChild(drawCircle('12', '12', radius, 'ring'));
+
+	Object.keys(data).forEach(item => {
+		const value = data[item];
+		const percentage = value / total;
+		const dash = percentage * circumference;
+		const circle = drawCircle('12', '12', radius, `segment ${item}`);
+
+		circle.setAttribute('stroke-dasharray', `${dash} ${circumference}`);
+		circle.setAttribute('stroke-dashoffset', `${offset * -1}`);
+		svg.appendChild(circle);
+
+		offset += dash;
+	});
+
+	return svg;
+}
+
+function drawBars(data, section) {
 	const ul = document.createElement('ul');
-	const items = sortData(data, ['ages', 'birthdays'].includes(article.id) ? true : false);
+	const items = sortData(data, ['ages', 'birthdays'].includes(section.id) ? true : false);
 
 	var max = 0;
 
-	if (article.id == 'ages')
+	if (section.id == 'ages')
 		max = Math.max(...Object.values(data).map(s => s.value.total));
-	else if (article.id == 'played')
+	else if (section.id == 'played' || section.id == 'birthdays')
 		max = Math.max(...Object.values(data).map(s => s.order));
 	else
 		max = Math.max(...Object.values(data).map(s => s.value));
@@ -251,30 +259,31 @@ function drawBars(data, article) {
 		let value = 0;
 		let bar = 0;
 
-		if (article.id == 'ages') {
+		if (section.id == 'ages') {
 			let v = Object.entries(items[item])[1][1];
 			value = formatTime(v);
 			bar = (v.total / max) * 100;
-		} else if (article.id == 'played') {
+		} else if (section.id == 'played') {
 			let v = Object.entries(items[item])[0][1];
 			value = formatTime(getDays(v));
 			bar = (v / max) * 100;
-		} else if (article.id == 'birthdays') {
-			let v = Object.entries(items[item])[1][1];
-			value = `${v}d`;
+		} else if (section.id == 'birthdays') {
+			let v = Object.entries(items[item])[0][1];
+			let y = Object.entries(items[item])[1][1]['years'];
+			value = `${v}d (${formatOrdinal(y + 1)} year)`;
 			bar = 100 - ((v / max) * 100);
 		} else {
 			value = Object.entries(items[item])[1][1];
 			bar = (value / max) * 100;
 		}
 
-		console.log(bar);
 		let li = document.createElement('li');
-		let elBar = document.createElement('div');
+		let elBar = document.createElement('span');
 		let elName = document.createElement('span');
 		let elValue = document.createElement('span');
 
 		elBar.style.width = `${Math.floor(bar)}%`;
+		elBar.className = 'bar';
 		elName.className = 'name';
 		elName.innerText = item;
 		elValue.className = 'value';
@@ -292,12 +301,12 @@ function drawBars(data, article) {
 function listCharacters(data) {
 	Object.keys(data).forEach(key => {
 		if (data[key].length > 0) {
-			let article = document.createElement('article');
+			let section = document.createElement('section');
 			let hr = document.createElement('h2');
 			let ul = document.createElement('ul');
 
-			article.id = key;
-			article.className = 'list';
+			section.id = key;
+			section.className = 'list';
 			hr.textContent = key;
 
 			for (value in data[key]) {
@@ -306,74 +315,56 @@ function listCharacters(data) {
 				ul.appendChild(li);
 			}
 
-			article.appendChild(hr);
-			article.appendChild(ul);
-			uiMain.appendChild(article);
+			section.appendChild(hr);
+			section.appendChild(ul);
+			uiArticle.appendChild(section);
 		}
 	});
 }
 
-function createArticle(id, data, type) {
-	let article = document.createElement('article');
-	let hr = document.createElement('h2');
+function createSection(id, data, type) {
 	let section = document.createElement('section');
+	let hr = document.createElement('h2');
+	let div = document.createElement('div');
 
-	article.id = id;
-	article.className = type;
+	section.id = id;
+	section.className = type;
 	hr.textContent = formatHeader(id);
 
 	if (type == 'pie') {
-		const pie = drawPie(data);
 		const labels = drawLabels(data);
-		section.appendChild(labels);
-		section.appendChild(pie);
+		const pie = drawPie(data);
+
+		div.appendChild(labels);
+		div.appendChild(pie);
 	} else {
-		const bars = drawBars(data, article);
-		section.appendChild(bars);
+		const bars = drawBars(data, section);
+
+		div.appendChild(bars);
 	}
 
-	article.appendChild(hr);
-	article.appendChild(section);
+	section.appendChild(hr);
+	section.appendChild(div);
 
-	return article;
-}
-
-function createLog(value, error = false) {
-	let div = document.createElement('div');
-	div.innerText = value;
-
-	uiFooter.appendChild(div);
-
-	if (!error) {
-		setTimeout(() => {
-			div.classList.add('fade');
-
-			setTimeout(() => { div.remove() }, 1000);
-		}, 2000);
-	} else {
-		div.classList.add('error');
-	}
+	return section;
 }
 
 async function fetchData(token) {
 	apiProcessing = true;
 
 	try {
-		createLog('Verifying token...');
+		uiSubmit.value = 'Verifying...';
 
 		const tokenInfo = await requestApi('tokeninfo', token);
 
 		if (tokenInfo.permissions.includes('characters')) {
-			createLog('Getting characters...');
+			uiSubmit.value = 'Collecting...';
 
 			const characters = await requestApi('characters', token);
-
-			createLog('Collecting data...');
-
-			const chunks = getCharactersChunks(characters, chunkSize);
+			const chunks = getCharactersChunks(characters, 10);
 			const api = await Promise.all(chunks.map(chunk => requestApi('characters', token, chunk)));
 
-			createLog('Parsing data...');
+			uiSubmit.value = 'Parsing...';
 
 			apiData = api.flat();
 
@@ -396,30 +387,30 @@ async function fetchData(token) {
 				data.Ages[character.name] = { order: Date.parse(character.created), value: getAge(character.created) };
 				data.Deaths[character.name] = { order: character.deaths, value: character.deaths };
 				data.Played[character.name] = { order: character.age, value: getDays(character.age) };
-				data.Birthdays[character.name] = { order: getBirthday(character.created), value: getBirthday(character.created) };
+				data.Birthdays[character.name] = { order: getBirthday(character.created), value: getAge(character.created) };
 			});
 
 			uiData = [];
-			uiData.push(createArticle('races', data.Races, 'pie'));
-			uiData.push(createArticle('professions', data.Professions, 'pie'));
-			uiData.push(createArticle('genders', data.Genders, 'pie'));
-			uiData.push(createArticle('levels', data.Levels, 'bars'));
-			uiData.push(createArticle('played', data.Played, 'bars'));
-			uiData.push(createArticle('deaths', data.Deaths, 'bars'));
-			uiData.push(createArticle('ages', data.Ages, 'bars'));
-			uiData.push(createArticle('birthdays', data.Birthdays, 'bars'));
+			uiData.push(createSection('races', data.Races, 'pie'));
+			uiData.push(createSection('professions', data.Professions, 'pie'));
+			uiData.push(createSection('genders', data.Genders, 'pie'));
+			uiData.push(createSection('levels', data.Levels, 'bars'));
+			uiData.push(createSection('played', data.Played, 'bars'));
+			uiData.push(createSection('deaths', data.Deaths, 'bars'));
+			uiData.push(createSection('ages', data.Ages, 'bars'));
+			uiData.push(createSection('birthdays', data.Birthdays, 'bars'));
 
 			const nav = document.querySelector('nav a.selected');
 			const index = getIndex(nav);
 
 			setMain(index);
 
-			createLog("Job's done!");
+			uiSubmit.value = 'Fetch';
 		} else {
 			throw new Error('Token permissions failed: Missing "characters" permission');
 		}
 	} catch (error) {
-		createLog(error.message, true);
+		uiSubmit.value = 'Retry';
 		console.error(error.message);
 	} finally {
 		apiProcessing = false;
@@ -431,33 +422,31 @@ function processToken(event) {
 		event.preventDefault();
 		const token = uiToken.value.trim();
 
-		if (!apiProcessing && /^[0-9A-F]{64}$/.test(token.replace(/-/g, '').toUpperCase())) {
-			uiFooter.innerHTML = '';
+		if (!apiProcessing && /^[0-9A-F]{64}$/.test(token.replace(/-/g, '').toUpperCase()))
 			fetchData(token);
-		}
 	}
 }
 
 function setMain(index) {
 	if (uiData.length > 0) {
-		uiMain.innerHTML = '';
+		uiArticle.innerHTML = '';
 
 		if (index === 0)
-			uiData.forEach(article => uiMain.appendChild(article));
+			uiData.forEach(section => uiArticle.appendChild(section));
 		else {
-			uiMain.appendChild(uiData[index - 1]);
+			uiArticle.appendChild(uiData[index - 1]);
 
 			let output;
 
 			switch (index) {
 				case 1:
-					output = getMain('race', labelsRace);
+					output = getMain('race', labelData.race);
 					break;
 				case 2:
-					output = getMain('profession', labelsProfession);
+					output = getMain('profession', labelData.profession);
 					break;
 				case 3:
-					output = getMain('gender', labelsGender);
+					output = getMain('gender', labelData.gender);
 					break;
 				default:
 					return;
@@ -471,22 +460,28 @@ function setMain(index) {
 uiToken.addEventListener('keydown', event => processToken(event));
 
 document.addEventListener('click', event => {
-	if (uiNav.includes(event.target)) {
+	if (Array.from(uiNav).includes(event.target)) {
 		event.preventDefault();
 		uiNav.forEach(nav => nav.classList.remove('selected'));
 		event.target.classList.add('selected');
+
 		setMain(getIndex(event.target));
 	}
 
 	if (event.target === uiSubmit)
 		processToken(event);
 
-	if (event.target === uiScreenshot) {
-		html2canvas(uiMain).then(canvas => {
-			var link = document.createElement('a');
+	if (event.target === uiScreenshot && uiArticle.children.length > 0) {
+		uiMain.classList.add('screenshot');
+
+		html2canvas(uiArticle).then(canvas => {
+			let nav = document.querySelector('nav a.selected').hash;
+			let link = document.createElement('a');
 			link.href = canvas.toDataURL('image/png');
-			link.download = 'gw2-characters-charts.png';
+			link.download = `gw2-characters-charts-${nav.substring(1)}.png`;
+
 			link.click();
+			uiMain.classList.remove('screenshot');
 		});
 	}
 });

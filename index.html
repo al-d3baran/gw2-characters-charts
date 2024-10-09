@@ -3,43 +3,42 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="author" content="Dimitris Nats (dimnats@windowslive.com)" />
-		<meta name="description" content="A javascript webpage that generates charts from Guild Wars 2 Characters API." />
+		<meta name="description" content="A javascript website that generates charts from Guild Wars 2 Characters API." />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Gw2 Characters Charts</title>
 		<link rel="icon" type="image/png" sizes="32x32" href="media/favicon/32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="media/favicon/16.png" />
 		<link rel="stylesheet" href="scripts/css/style.css" />
 		<link rel="stylesheet" href="scripts/css/media.css" />
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script src="scripts/js/interface.js" defer></script>
 	</head>
 	<body>
-		<header>
-			<h1>Gw2 Characters Charts</h1>
-			<form>
-				<input type="text" id="token" placeholder="Api token" autocomplete="off" />
-				<input type="submit" id="submit" value="Fetch" />
-			</form>
-			<nav>
-				<a href="#all" class="selected">All</a>
-				<a href="#races">Races</a>
-				<a href="#professions">Professions</a>
-				<a href="#genders">Genders</a>
-				<a href="#levels">Levels</a>
-				<a href="#played">Played</a>
-				<a href="#deaths">Deaths</a>
-				<a href="#ages">Ages</a>
-				<a href="#birthdays">Birthdays</a>
-			</nav>
-			<div id="screenshot">
-				<svg fill="currentColor" width="64px" height="64px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path d="M19 14h-2v3h-3v2h3v3h2v-3h3v-2h-3zM4 19h3v-2H5v-2H3v3a1 1 0 0 0 1 1zM19 4a1 1 0 0 0-1-1h-3v2h2v2h2V4zM5 5h2V3H4a1 1 0 0 0-1 1v3h2V5zM3 9h2v4H3zm14 0h2v3h-2zM9 3h4v2H9zm0 14h3v2H9z"/>
-				</svg>
-			</div>
-		</header>
 		<main>
+			<header>
+				<h1>Gw2 Characters Charts</h1>
+				<form>
+					<input type="text" id="token" placeholder="Api token" autocomplete="off" />
+					<input type="submit" id="submit" value="Fetch" />
+					<input type="button" id="screenshot" />
+				</form>
+				<nav>
+					<a href="#all" class="selected">All</a>
+					<a href="#races">Races</a>
+					<a href="#professions">Professions</a>
+					<a href="#genders">Genders</a>
+					<a href="#levels">Levels</a>
+					<a href="#played">Played</a>
+					<a href="#deaths">Deaths</a>
+					<a href="#ages">Ages</a>
+					<a href="#birthdays">Birthdays</a>
+				</nav>
+			</header>
+			<article></article>
+			<footer>
+				<p>Developed by al_d3baran @ 2024</p>
+				<p>This website uses icons that are &copy; 2010-2024 ArenaNet, LLC.</p>
+			</footer>
 		</main>
-		<footer>
-		</footer>
 	</body>
 </html>
