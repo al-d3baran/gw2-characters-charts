@@ -240,8 +240,6 @@ footer {
 
 div.tooltip {
 	position: absolute;
-	top: 0;
-	left: 0;
 	font-size: 1.4rem;
 	padding: 2px 6px;
 	border-radius: 6px;
