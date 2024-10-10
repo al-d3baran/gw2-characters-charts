@@ -76,6 +76,10 @@
 	footer {
 		color: #444;
 	}
+
+	div.tooltip {
+		background-color: #3a3a3a;
+	}
 }
 
 @media (prefers-color-scheme: light) {
@@ -146,6 +150,10 @@
 
 	footer {
 		color: #aaa;
+	}
+
+	div.tooltip {
+		background-color: #555;
 	}
 }
 
@@ -314,4 +322,9 @@ section.pie div svg circle.Female {
 
 #genders div ul li span.Female {
 	border-color: var(--color-female);
+}
+
+div.tooltip {
+	color: #fff;
+	border-color: transparent;
 }

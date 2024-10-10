@@ -11,8 +11,8 @@ const labelData = {
 	gender: ["Male", "Female"]
 }
 
-var apiData = {};
 var uiData = [];
+var apiData = {};
 var apiProcessing = false;
 
 function formatHeader(value) {
@@ -205,13 +205,35 @@ function getMain(criteria, labels) {
 	return output;
 }
 
-function drawCircle(cx, cy, radius, name) {
+function drawCircle(cx, cy, radius, classname, tooltip) {
 	const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
 	circle.setAttribute('cx', cx);
 	circle.setAttribute('cy', cy);
 	circle.setAttribute('r', radius);
-	circle.setAttribute('class', name);
+	circle.setAttribute('class', classname);
+
+	if (tooltip) {
+		circle.addEventListener('mouseover', () => {
+			const div = document.createElement('div');
+			div.className = 'tooltip';
+			div.textContent = tooltip;
+
+			document.body.appendChild(div);
+
+			const positionTooltip = event => {
+				div.style.left = `${event.pageX + 10}px`;
+				div.style.top = `${event.pageY + 10}px`;
+			};
+
+			circle.addEventListener('mousemove', positionTooltip);
+
+			circle.addEventListener('mouseout', () => {
+				div.remove();
+				circle.removeEventListener('mousemove', positionTooltip);
+			});
+		});
+	}
 
 	return circle;
 }
@@ -225,11 +247,11 @@ function drawPie(data) {
 	let offset = 0;
 
 	svg.setAttribute('viewBox', '0 0 24 24');
-	svg.appendChild(drawCircle('12', '12', radius, 'ring'));
+	svg.appendChild(drawCircle('12', '12', radius, 'ring', null));
 
 	Object.keys(data).forEach(item => {
 		const dash = (parseInt(data[item]) / total) * circum;
-		const circle = drawCircle('12', '12', radius, `segment ${item}`);
+		const circle = drawCircle('12', '12', radius, `segment ${item}`, `${item}: ${data[item]}`);
 
 		circle.setAttribute('stroke-dasharray', `${dash} ${circum}`);
 		circle.setAttribute('stroke-dashoffset', `${offset * -1}`);
