@@ -218,8 +218,8 @@ function drawCircle(cx, cy, radius, name) {
 
 function drawPie(data) {
 	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	const circum = 2 * Math.PI * radius;
 	const radius = 8.5;
+	const circum = 2 * Math.PI * radius;
 	const total = Object.values(data).reduce((acc, val) => acc + val, 0);
 
 	let offset = 0;
