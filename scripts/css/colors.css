@@ -1,0 +1,317 @@
+@media (prefers-color-scheme: dark) {
+	body {
+		text-shadow: 1px 1px #000;
+	}
+
+	body,
+	article {
+		background-color: #1a1a1a;
+	}
+
+	h1,
+	h2 {
+		color: #eee;
+	}
+
+	input {
+		color: #fff;
+		border-color: #000;
+	}
+
+	#token {
+		background-color: #333;
+	}
+
+	#token:focus {
+		background-color: #4e4e4e;
+	}
+
+	#submit,
+	#screenshot {
+		background-color: #415868;
+	}
+
+	#submit:hover,
+	#screenshot:hover {
+		background-color: #5e84a0;
+	}
+
+	#screenshot {
+		background-image: url('../svg/screenshot-dark.svg');
+	}
+
+	nav a {
+		color: #5e84a0;
+	}
+
+	nav a:hover {
+		color: #89bfe6;
+	}
+
+	nav a.selected {
+		color: #fff;
+	}
+
+	section div ul li span,
+	section.list ul li {
+		color: #ccc;
+	}
+
+	section.pie div svg .ring {
+		stroke: #000;
+	}
+
+	section.bars div ul li span {
+		color: #fff;
+	}
+
+	section.bars div ul li {
+		background-color: #000;
+	}
+
+	section.bars div ul li:hover {
+		background-color: #121212;
+	}
+
+	footer {
+		color: #444;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	body,
+	article {
+		background-color: #f4f4f4;
+	}
+
+	h1,
+	h2,
+	section.list ul li {
+		color: #444;
+	}
+
+	input {
+		border-color: #a3a3a3;
+	}
+
+	#token {
+		background-color: #fff;
+	}
+
+	#token:focus {
+		background-color: #f4f4f4;
+	}
+
+	#submit,
+	#screenshot {
+		background-color: #d0dee7;
+	}
+
+	#submit:hover,
+	#screenshot:hover {
+		background-color: #b4c1c9;
+	}
+
+	#screenshot {
+		background-image: url('../svg/screenshot-light.svg');
+	}
+
+	nav a {
+		color: #7a8d97;
+	}
+
+	nav a:hover {
+		color: #395d70;
+	}
+
+	nav a.selected {
+		color: #222;
+	}
+
+	section div ul li span {
+		color: #333;
+	}
+
+	section.bars div ul li {
+		background-color: #f0f0f0;
+	}
+
+	section.bars div ul li:hover {
+		background-color: #e8e8e8;
+	}
+
+	section.pie div svg .ring {
+		stroke: #fff;
+	}
+
+	footer {
+		color: #aaa;
+	}
+}
+
+:root {
+	--color-asura: #a27bf1;
+	--color-charr: #fe7887;
+	--color-human: #ffe566;
+	--color-norn: #75baff;
+	--color-sylvari: #61e665;
+	--color-guardian: #72c1d9;
+	--color-revenant: #d16e5a;
+	--color-warrior: #ffd166;
+	--color-engineer: #d09c59;
+	--color-ranger: #8edf44;
+	--color-thief: #c08f95;
+	--color-elementalist: #f68a87;
+	--color-mesmer: #b679d5;
+	--color-necromancer: #52a76f;
+	--color-male: #4a90e2;
+	--color-female: #ff6f91;
+}
+
+#levels div ul li span.bar {
+	background-color: #5dade2;
+}
+
+#ages div ul li span.bar {
+	background-color: #76d7c4;
+}
+
+#deaths div ul li span.bar {
+	background-color: #ff5e57;
+}
+
+#played div ul li span.bar {
+	background-color: #f1c40f;
+}
+
+#birthdays div ul li span.bar {
+	background-color: #b39ddb;
+}
+
+section.pie div svg circle.Asura {
+	stroke: var(--color-asura);
+}
+
+section.pie div svg circle.Charr {
+	stroke: var(--color-charr);
+}
+
+section.pie div svg circle.Human {
+	stroke: var(--color-human);
+}
+
+section.pie div svg circle.Norn {
+	stroke: var(--color-norn);
+}
+
+section.pie div svg circle.Sylvari {
+	stroke: var(--color-sylvari);
+}
+
+section.pie div svg circle.Elementalist {
+	stroke: var(--color-elementalist);
+}
+
+section.pie div svg circle.Engineer {
+	stroke: var(--color-engineer);
+}
+
+section.pie div svg circle.Guardian {
+	stroke: var(--color-guardian);
+}
+
+section.pie div svg circle.Mesmer {
+	stroke: var(--color-mesmer);
+}
+
+section.pie div svg circle.Necromancer {
+	stroke: var(--color-necromancer);
+}
+
+section.pie div svg circle.Ranger {
+	stroke: var(--color-ranger);
+}
+
+section.pie div svg circle.Revenant {
+	stroke: var(--color-revenant);
+}
+
+section.pie div svg circle.Thief {
+	stroke: var(--color-thief);
+}
+
+section.pie div svg circle.Warrior {
+	stroke: var(--color-warrior);
+}
+
+section.pie div svg circle.Male {
+	stroke: var(--color-male);
+}
+
+section.pie div svg circle.Female {
+	stroke: var(--color-female);
+}
+
+#races div ul li span.Asura {
+	border-color: var(--color-asura);
+}
+
+#races div ul li span.Charr {
+	border-color: var(--color-charr);
+}
+
+#races div ul li span.Human {
+	border-color: var(--color-human);
+}
+
+#races div ul li span.Norn {
+	border-color: var(--color-norn);
+}
+
+#races div ul li span.Sylvari {
+	border-color: var(--color-sylvari);
+}
+
+#professions div ul li span.Elementalist {
+	border-color: var(--color-elementalist);
+}
+
+#professions div ul li span.Engineer {
+	border-color: var(--color-engineer);
+}
+
+#professions div ul li span.Guardian {
+	border-color: var(--color-guardian);
+}
+
+#professions div ul li span.Mesmer {
+	border-color: var(--color-mesmer);
+}
+
+#professions div ul li span.Necromancer {
+	border-color: var(--color-necromancer);
+}
+
+#professions div ul li span.Ranger {
+	border-color: var(--color-ranger);
+}
+
+#professions div ul li span.Revenant {
+	border-color: var(--color-revenant);
+}
+
+#professions div ul li span.Thief {
+	border-color: var(--color-thief);
+}
+
+#professions div ul li span.Warrior {
+	border-color: var(--color-warrior);
+}
+
+#genders div ul li span.Male {
+	border-color: var(--color-male);
+}
+
+#genders div ul li span.Female {
+	border-color: var(--color-female);
+}

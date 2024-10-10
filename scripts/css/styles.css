@@ -41,7 +41,6 @@ h2 {
 }
 
 main {
-	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
 	width: 720px;
@@ -56,7 +55,18 @@ main.screenshot footer {
 	display: none;
 }
 
-article {
+main,
+form,
+nav,
+section div,
+section.bars div ul li {
+	display: flex;
+}
+
+article,
+#token,
+section div ul,
+section.bars div ul li span.name {
 	flex: 1;
 }
 
@@ -71,35 +81,16 @@ footer {
 }
 
 form {
-	display: flex;
 	width: 100%;
 	margin: 12px 0;
 }
 
 input {
+	border-style: solid;
+	border-width: 0;
 	padding: 8px 6px;
 	font-size: 1.2rem;
-}
-
-nav {
-	display: flex;
-	justify-content: space-between;
-	font-size: 0;
-}
-
-nav a {
-	font-size: 1.7rem;
-	text-decoration: none;
-}
-
-nav a.selected {
-	text-decoration: underline;
-}
-
-#token,
-#submit,
-#screenshot {
-	border-style: solid;
+	transition: color .2s, border-color .2s, background-color .2s;
 }
 
 #submit,
@@ -108,11 +99,9 @@ nav a.selected {
 }
 
 #token {
-	flex: 1;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
 	border-left-width: 1px;
-	border-right: none;
 	border-top-left-radius: 4px;
 	border-bottom-left-radius: 4px;
 }
@@ -130,13 +119,27 @@ nav a.selected {
 	width: 36px;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
-	border-left: none;
 	border-right-width: 1px;
 	border-top-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 	background-size: 18px 18px;
 	background-repeat: no-repeat;
 	background-position: center;
+}
+
+nav {
+	justify-content: space-between;
+	font-size: 0;
+}
+
+nav a {
+	font-size: 1.7rem;
+	text-decoration: none;
+	transition: color .2s;
+}
+
+nav a.selected {
+	text-decoration: underline;
 }
 
 section {
@@ -148,12 +151,7 @@ section:not(:last-of-type) {
 	margin-bottom: 24px;
 }
 
-section div {
-	display: flex;
-}
-
 section div ul {
-	flex: 1;
 	list-style: none;
 }
 
@@ -188,10 +186,15 @@ section.pie div svg {
 section.pie div svg circle {
 	fill: none;
 	stroke-width: 7;
+	transition: opacity .2s;
 }
 
-section.pie div svg .ring {
-	stroke: #ccc;
+section.pie div svg circle {
+	opacity: .65;
+}
+
+section.pie div svg circle:hover {
+	opacity: 1;
 }
 
 section.pie div svg .segment {
@@ -206,8 +209,8 @@ section.bars div ul li span.bar {
 
 section.bars div ul li {
 	position: relative;
-	display: flex;
 	padding: 4px;
+	transition: background-color .2s;
 }
 
 section.bars div ul li span.bar {
@@ -216,17 +219,19 @@ section.bars div ul li span.bar {
 	top: 0;
 	width: 300px;
 	height: 100%;
+	opacity: .5;
 	z-index: 1;
+	transition: opacity .2s;
+}
+
+section.bars div ul li:hover span.bar {
+	opacity: 1;
 }
 
 section.bars div ul li span.name,
 section.bars div ul li span.value {
 	position: relative;
 	z-index: 2;
-}
-
-section.bars div ul li span.name {
-	flex: 1;
 }
 
 footer {
