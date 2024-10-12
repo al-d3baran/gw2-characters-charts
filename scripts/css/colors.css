@@ -90,20 +90,24 @@
 	}
 
 	#token {
+		background-color: #f8f8f8;
+	}
+
+	#token:focus {
 		background-color: #fff;
 	}
 
 	#submit,
 	#menu,
 	#screenshot {
-		background-color: #c4dbf0;
+		background-color: #e0e0e0;
 	}
 
 	#submit:hover,
 	#menu:hover,
 	#menu option:hover,
 	#screenshot:hover {
-		background-color: #aad6ff;
+		background-color: #c9c9c9;
 	}
 
 	#screenshot {
