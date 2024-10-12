@@ -1,9 +1,9 @@
-const uiNav = document.querySelectorAll('nav a');
 const uiToken = document.getElementById('token');
 const uiSubmit = document.getElementById('submit');
+const uiMenu =  document.getElementById('menu');
+const uiScreenshot = document.querySelector('#screenshot');
 const uiMain = document.querySelector('main');
 const uiArticle = document.querySelector('article');
-const uiScreenshot = document.querySelector('#screenshot');
 
 const labelData = {
 	race: ["Asura", "Charr", "Human", "Norn", "Sylvari"],
@@ -83,10 +83,6 @@ async function requestApi(endpoint, token = null, ids = null) {
 	}
 }
 
-function getIndex(element) {
-	return Array.prototype.indexOf.call(element.parentNode.children, element);
-}
-
 function getCharactersChunks(characters, size) {
 	const chunks = [];
 
@@ -164,6 +160,62 @@ function getCharacterDetails(data) {
 	return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[3].toLowerCase()})`;
 }
 
+function getMain(criteria, labels) {
+	const output = {};
+
+	labels.forEach(label => {
+		output[label] = apiData
+			.filter(data => data[criteria] === label)
+			.map(data => getDetails(labels, [data.name, data.level, data.gender, data.profession, data.race]))
+			.sort();
+	});
+
+	return output;
+}
+
+function setMain() {
+	if (uiData.length > 0) {
+		uiArticle.innerHTML = '';
+
+		let index = parseInt(uiMenu.value);
+
+		if (index === 0)
+			uiData.forEach(section => uiArticle.appendChild(section));
+		else {
+			uiArticle.appendChild(uiData[index - 1]);
+
+			let output;
+
+			switch (index) {
+				case 1:
+					output = getMain('race', labelData.race);
+					break;
+				case 2:
+					output = getMain('profession', labelData.profession);
+					break;
+				case 3:
+					output = getMain('gender', labelData.gender);
+					break;
+				default:
+					return;
+			}
+
+			listCharacters(output);
+		}
+	}
+}
+
+function getDetails(label, data) {
+	switch (label) {
+		case labelData.race:
+			return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[3].toLowerCase()})`;
+		case labelData.profession:
+			return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[4].toLowerCase()})`;
+		case labelData.gender:
+			return `${data[0]} (Lv.${data[1]} ${data[4].toLowerCase()} ${data[3].toLowerCase()})`;
+	}
+}
+
 function drawLabels(data) {
 	const ul = document.createElement('ul');
 
@@ -179,30 +231,6 @@ function drawLabels(data) {
 	});
 
 	return ul;
-}
-
-function getDetails(label, data) {
-	switch (label) {
-		case labelData.race:
-			return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[3].toLowerCase()})`;
-		case labelData.profession:
-			return `${data[0]} (Lv.${data[1]} ${data[2].toLowerCase()} ${data[4].toLowerCase()})`;
-		case labelData.gender:
-			return `${data[0]} (Lv.${data[1]} ${data[4].toLowerCase()} ${data[3].toLowerCase()})`;
-	}
-}
-
-function getMain(criteria, labels) {
-	const output = {};
-
-	labels.forEach(label => {
-		output[label] = apiData
-			.filter(data => data[criteria] === label)
-			.map(data => getDetails(labels, [data.name, data.level, data.gender, data.profession, data.race]))
-			.sort();
-	});
-
-	return output;
 }
 
 function drawCircle(cx, cy, radius, classname, tooltip) {
@@ -421,10 +449,7 @@ async function fetchData(token) {
 			uiData.push(createSection('ages', data.Ages, 'bars'));
 			uiData.push(createSection('birthdays', data.Birthdays, 'bars'));
 
-			const nav = document.querySelector('nav a.selected');
-			const index = getIndex(nav);
-
-			setMain(index);
+			setMain();
 
 			uiSubmit.value = 'Fetch';
 		} else {
@@ -448,47 +473,11 @@ function processToken(event) {
 	}
 }
 
-function setMain(index) {
-	if (uiData.length > 0) {
-		uiArticle.innerHTML = '';
-
-		if (index === 0)
-			uiData.forEach(section => uiArticle.appendChild(section));
-		else {
-			uiArticle.appendChild(uiData[index - 1]);
-
-			let output;
-
-			switch (index) {
-				case 1:
-					output = getMain('race', labelData.race);
-					break;
-				case 2:
-					output = getMain('profession', labelData.profession);
-					break;
-				case 3:
-					output = getMain('gender', labelData.gender);
-					break;
-				default:
-					return;
-			}
-
-			listCharacters(output);
-		}
-	}
-}
-
 uiToken.addEventListener('keydown', event => processToken(event));
 
+uiMenu.addEventListener('change', () => setMain());
+
 document.addEventListener('click', event => {
-	if (Array.from(uiNav).includes(event.target)) {
-		event.preventDefault();
-		uiNav.forEach(nav => nav.classList.remove('selected'));
-		event.target.classList.add('selected');
-
-		setMain(getIndex(event.target));
-	}
-
 	if (event.target === uiSubmit)
 		processToken(event);
 
@@ -496,10 +485,10 @@ document.addEventListener('click', event => {
 		uiMain.classList.add('screenshot');
 
 		html2canvas(uiArticle).then(canvas => {
-			let nav = document.querySelector('nav a.selected').hash;
+			let option = uiMenu.options[uiMenu.selectedIndex].text;
 			let link = document.createElement('a');
 			link.href = canvas.toDataURL('image/png');
-			link.download = `gw2-characters-charts-${nav.substring(1)}.png`;
+			link.download = `gw2-characters-charts-${option.toLowerCase()}.png`;
 
 			link.click();
 			uiMain.classList.remove('screenshot');

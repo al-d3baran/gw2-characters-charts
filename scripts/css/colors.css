@@ -13,7 +13,8 @@
 		color: #eee;
 	}
 
-	input {
+	input,
+	#menu {
 		color: #fff;
 		border-color: #000;
 	}
@@ -27,6 +28,7 @@
 	}
 
 	#submit,
+	#menu,
 	#screenshot {
 		background-color: #415868;
 	}
@@ -38,18 +40,6 @@
 
 	#screenshot {
 		background-image: url('../svg/screenshot-dark.svg');
-	}
-
-	nav a {
-		color: #5e84a0;
-	}
-
-	nav a:hover {
-		color: #89bfe6;
-	}
-
-	nav a.selected {
-		color: #fff;
 	}
 
 	section div ul li span,
@@ -94,42 +84,30 @@
 		color: #444;
 	}
 
-	input {
-		border-color: #a3a3a3;
+	input,
+	#menu {
+		border-color: #949494;
 	}
 
 	#token {
 		background-color: #fff;
 	}
 
-	#token:focus {
-		background-color: #f4f4f4;
-	}
-
 	#submit,
+	#menu,
 	#screenshot {
-		background-color: #d0dee7;
+		background-color: #c4dbf0;
 	}
 
 	#submit:hover,
+	#menu:hover,
+	#menu option:hover,
 	#screenshot:hover {
-		background-color: #b4c1c9;
+		background-color: #aad6ff;
 	}
 
 	#screenshot {
 		background-image: url('../svg/screenshot-light.svg');
-	}
-
-	nav a {
-		color: #7a8d97;
-	}
-
-	nav a:hover {
-		color: #395d70;
-	}
-
-	nav a.selected {
-		color: #222;
 	}
 
 	section div ul li span {
